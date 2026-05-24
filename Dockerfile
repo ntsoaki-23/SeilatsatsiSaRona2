@@ -1,6 +1,13 @@
 FROM tomcat:10.1-jdk21
+
+# Remove default webapps
 RUN rm -rf /usr/local/tomcat/webapps/*
-RUN mkdir -p /usr/local/tomcat/webapps/ROOT
-RUN printf '<html><body><h1>Seilatsatsi FIS</h1><p>Deployment Successful!</p></body></html>' > /usr/local/tomcat/webapps/ROOT/index.jsp
+
+# Copy your WAR file as ROOT (so it runs at root URL)
+COPY SeilatsatsiSaRona.war /usr/local/tomcat/webapps/ROOT.war
+
+# Expose port
 EXPOSE 8080
+
+# Start Tomcat
 CMD ["catalina.sh", "run"]
