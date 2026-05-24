@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seilatsatsi Online Shop - Financial Information System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100%;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            z-index: 100;
+            transition: all 0.3s;
+            box-shadow: 2px 0 20px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-header h2 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-left: 3px solid #667eea;
+        }
+
+        .menu-item i {
+            width: 20px;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            border-radius: 15px;
+            padding: 15px 25px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .page-title h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .page-title p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #667eea;
+        }
+
+        /* Charts Row */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        canvas {
+            max-height: 300px;
+        }
+
+        /* Orders Table */
+        .orders-table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .table-header h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            transform: scale(1.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .status-paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-delivered {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 500px;
+            max-width: 90%;
+            padding: 25px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+        }
+
+        .close-modal {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            .sidebar-header h2, .sidebar-header p, .menu-item span {
+                display: none;
+            }
+            .main-content {
+                margin-left: 70px;
+            }
+            .charts-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>🛍️ Seilatsatsi</h2>
+            <p>Financial Information System</p>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-item active" onclick="showPage('dashboard')">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item" onclick="showPage('orders')">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Orders</span>
+            </div>
+            <div class="menu-item" onclick="showPage('products')">
+                <i class="fas fa-box"></i>
+                <span>Products</span>
+            </div>
+            <div class="menu-item" onclick="showPage('customers')">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </div>
+            <div class="menu-item" onclick="showPage('reports')">
+                <i class="fas fa-chart-line"></i>
+                <span>Reports</span>
+            </div>
+            <div class="menu-item" onclick="showPage('expenses')">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Expenses</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="page-title">
+                <h1>Financial Dashboard</h1>
+                <p>Welcome back! Here's what's happening with your business today.</p>
+            </div>
+            <div class="user-info">
+                <span class="user-name">Admin User</span>
+                <div class="avatar">A</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div id="dashboard-page">
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Total Orders</h3>
+                        <div class="stat-number" id="totalOrders">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Total Revenue</h3>
+                        <div class="stat-number" id="totalRevenue">M 0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Total Profit</h3>
+                        <div class="stat-number" id="totalProfit">M 0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Pending Orders</h3>
+                        <div class="stat-number" id="pendingOrders">0</div>
+                    </div>
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-title">Weekly Sales Trend</div>
+                    <canvas id="salesChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Revenue by Supplier</div>
+                    <canvas id="supplierChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Orders Table -->
+            <div class="orders-table-container">
+                <div class="table-header">
+                    <h3>Recent Orders</h3>
+                    <button class="btn-add" onclick="openOrderModal()">
+                        <i class="fas fa-plus"></i> New Order
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Page (Hidden by default) -->
+        <div id="products-page" style="display: none;">
+            <div class="orders-table-container">
+                <div class="table-header">
+                    <h3>Product Catalog</h3>
+                    <button class="btn-add" onclick="openProductModal()">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product Name</th>
+                                <th>Supplier</th>
+                                <th>Cost (M)</th>
+                                <th>Selling (M)</th>
+                                <th>Profit (M)</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customers Page -->
+        <div id="customers-page" style="display: none;">
+            <div class="orders-table-container">
+                <div class="table-header">
+                    <h3>Customer List</h3>
+                    <button class="btn-add" onclick="openCustomerModal()">
+                        <i class="fas fa-plus"></i> Add Customer
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Full Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Orders</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customersTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Page -->
+        <div id="reports-page" style="display: none;">
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-title">Profit Report</div>
+                    <canvas id="profitChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Top Selling Products</div>
+                    <canvas id="topProductsChart"></canvas>
+                </div>
+            </div>
+            <div class="orders-table-container">
+                <div class="table-header">
+                    <h3>Financial Summary</h3>
+                    <button class="btn-add" onclick="exportReport()">
+                        <i class="fas fa-download"></i> Export Report
+                    </button>
+                </div>
+                <div id="financialSummary"></div>
+            </div>
+        </div>
+
+        <!-- Expenses Page -->
+        <div id="expenses-page" style="display: none;">
+            <div class="orders-table-container">
+                <div class="table-header">
+                    <h3>Expense Tracking</h3>
+                    <button class="btn-add" onclick="openExpenseModal()">
+                        <i class="fas fa-plus"></i> Add Expense
+                    </button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Amount (M)</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expensesTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>New Order</h3>
+                <span class="close-modal" onclick="closeOrderModal()">&times;</span>
+            </div>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select id="orderCustomer" required>
+                        <option value="">Select Customer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Product</label>
+                    <select id="orderProduct" required>
+                        <option value="">Select Product</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="orderQuantity" value="1" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="orderPayment">
+                        <option value="Cash">Cash</option>
+                        <option value="Bank Transfer">Bank Transfer</option>
+                        <option value="Mobile Money">Mobile Money</option>
+                        <option value="COD">Cash on Delivery</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Delivery Fee (M)</label>
+                    <input type="number" id="orderDeliveryFee" value="0">
+                </div>
+                <button type="submit" class="btn-submit">Create Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Product</h3>
+                <span class="close-modal" onclick="closeProductModal()">&times;</span>
+            </div>
+            <form id="productForm">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label>Supplier</label>
+                    <select id="productSupplier" required>
+                        <option value="SHEIN">SHEIN</option>
+                        <option value="TEMU">TEMU</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Supplier Price (M)</label>
+                    <input type="number" id="productCost" required>
+                </div>
+                <div class="form-group">
+                    <label>Selling Price (M)</label>
+                    <input type="number" id="productPrice" required>
+                </div>
+                <button type="submit" class="btn-submit">Add Product</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Customer Modal -->
+    <div id="customerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Customer</h3>
+                <span class="close-modal" onclick="closeCustomerModal()">&times;</span>
+            </div>
+            <form id="customerForm">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="customerEmail">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <textarea id="customerAddress" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Add Customer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Expense Modal -->
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add Expense</h3>
+                <span class="close-modal" onclick="closeExpenseModal()">&times;</span>
+            </div>
+            <form id="expenseForm">
+                <div class="form-group">
+                    <label>Category</label>
+                    <select id="expenseCategory" required>
+                        <option value="Rent">Rent</option>
+                        <option value="Electricity">Electricity</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Salaries">Salaries</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount (M)</label>
+                    <input type="number" id="expenseAmount" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="expenseDescription">
+                </div>
+                <button type="submit" class="btn-submit">Add Expense</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const USE_MOCK_DATA = true;  // Set to false when backend is ready
+        
+        // ============================================
+        // DATA STORES
+        // ============================================
+        let orders = [];
+        let products = [];
+        let customers = [];
+        let expenses = [];
+        
+        // ============================================
+        // MOCK DATA
+        // ============================================
+        function getMockOrders() {
+            return [
+                { id: 1, customer: "Thabo Molefe", product: "Women Summer Dress", quantity: 2, amount: 700, status: "delivered", payment: "paid" },
+                { id: 2, customer: "Keitumetse Ndlovu", product: "Smart Watch", quantity: 1, amount: 550, status: "shipped", payment: "pending" },
+                { id: 3, customer: "Boitumelo Kgosi", product: "Wireless Earbuds", quantity: 3, amount: 1260, status: "ordered", payment: "paid" }
+            ];
+        }
+        
+        function getMockProducts() {
+            return [
+                { id: 1, name: "Women Summer Dress", supplier: "SHEIN", cost: 150, selling: 350 },
+                { id: 2, name: "Men T-Shirt Pack", supplier: "SHEIN", cost: 200, selling: 450 },
+                { id: 3, name: "Smart Watch", supplier: "TEMU", cost: 250, selling: 550 },
+                { id: 4, name: "Wireless Earbuds", supplier: "TEMU", cost: 180, selling: 420 }
+            ];
+        }
+        
+        function getMockCustomers() {
+            return [
+                { id: 1, name: "Thabo Molefe", phone: "+266 51234567", email: "thabo@gmail.com", address: "Maseru, Lesotho", orders: 5 },
+                { id: 2, name: "Keitumetse Ndlovu", phone: "+266 67345678", email: "keitumetse@yahoo.com", address: "Leribe, Lesotho", orders: 3 },
+                { id: 3, name: "Boitumelo Kgosi", phone: "+266 57345689", email: "boitumelo@gmail.com", address: "Berea, Lesotho", orders: 8 }
+            ];
+        }
+        
+        function getMockExpenses() {
+            return [
+                { date: "2024-01-15", category: "Rent", amount: 5000, description: "Monthly rent" },
+                { date: "2024-01-20", category: "Marketing", amount: 2000, description: "Facebook ads" }
+            ];
+        }
+        
+        // ============================================
+        // LOAD DATA
+        // ============================================
+        function loadAllData() {
+            if (USE_MOCK_DATA) {
+                orders = getMockOrders();
+                products = getMockProducts();
+                customers = getMockCustomers();
+                expenses = getMockExpenses();
+            }
+            
+            updateStatsCards();
+            loadOrdersTable();
+            loadProductsTable();
+            loadCustomersTable();
+            loadExpensesTable();
+        }
+        
+        function updateStatsCards() {
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => sum + order.amount, 0);
+            const totalProfit = orders.reduce((sum, order) => {
+                const product = products.find(p => p.name === order.product);
+                const profitPerOrder = product ? (product.selling - product.cost) * order.quantity : 0;
+                return sum + profitPerOrder;
+            }, 0);
+            const pendingOrders = orders.filter(o => o.status === 'ordered' || o.status === 'pending').length;
+            
+            document.getElementById('totalOrders').innerText = totalOrders;
+            document.getElementById('totalRevenue').innerHTML = `M ${totalRevenue.toLocaleString()}`;
+            document.getElementById('totalProfit').innerHTML = `M ${totalProfit.toLocaleString()}`;
+            document.getElementById('pendingOrders').innerText = pendingOrders;
+        }
+        
+        // ============================================
+        // TABLE FUNCTIONS
+        // ============================================
+        function loadOrdersTable() {
+            const tbody = document.getElementById('ordersTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            orders.forEach(order => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${order.id}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.product}</td>
+                    <td>${order.quantity}</td>
+                    <td>M ${order.amount}</td>
+                    <td><span class="status-badge status-${order.status === 'delivered' ? 'delivered' : 'pending'}">${order.status}</span></td>
+                    <td><span class="status-badge status-${order.payment}">${order.payment}</span></td>
+                `;
+            });
+        }
+        
+        function loadProductsTable() {
+            const tbody = document.getElementById('productsTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            products.forEach(product => {
+                const row = tbody.insertRow();
+                const profit = product.selling - product.cost;
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.name}</td>
+                    <td>${product.supplier}</td>
+                    <td>M ${product.cost}</td>
+                    <td>M ${product.selling}</td>
+                    <td>M ${profit}</td>
+                    <td><button onclick="deleteProduct(${product.id})" style="background:#dc3545;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Delete</button></td>
+                `;
+            });
+        }
+        
+        function loadCustomersTable() {
+            const tbody = document.getElementById('customersTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            customers.forEach(customer => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${customer.id}</td>
+                    <td>${customer.name}</td>
+                    <td>${customer.phone}</td>
+                    <td>${customer.email}</td>
+                    <td>${customer.address}</td>
+                    <td>${customer.orders}</td>
+                `;
+            });
+        }
+        
+        function loadExpensesTable() {
+            const tbody = document.getElementById('expensesTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            expenses.forEach((expense, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${expense.date}</td>
+                    <td>${expense.category}</td>
+                    <td>M ${expense.amount}</td>
+                    <td>${expense.description}</td>
+                    <td><button onclick="deleteExpense(${index})" style="background:#dc3545;color:white;border:none;padding:5px 10px;border-radius:5px;cursor:pointer;">Delete</button></td>
+                `;
+            });
+        }
+        
+        function loadCustomerDropdown() {
+            const select = document.getElementById('orderCustomer');
+            if (!select) return;
+            select.innerHTML = '<option value="">Select Customer</option>';
+            customers.forEach(customer => {
+                select.innerHTML += `<option value="${customer.id}">${customer.name}</option>`;
+            });
+        }
+        
+        function loadProductDropdown() {
+            const select = document.getElementById('orderProduct');
+            if (!select) return;
+            select.innerHTML = '<option value="">Select Product</option>';
+            products.forEach(product => {
+                select.innerHTML += `<option value="${product.id}">${product.name} - M${product.selling}</option>`;
+            });
+        }
+        
+        // ============================================
+        // CHARTS
+        // ============================================
+        let salesChart, supplierChart, profitChart, topProductsChart;
+        
+        function initCharts() {
+            const salesCtx = document.getElementById('salesChart').getContext('2d');
+            salesChart = new Chart(salesCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Revenue (M)',
+                        data: [3200, 4500, 3800, 5200, 6800, 7500, 8900],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: true }
+            });
+            
+            const supplierCtx = document.getElementById('supplierChart').getContext('2d');
+            supplierChart = new Chart(supplierCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['SHEIN', 'TEMU'],
+                    datasets: [{ data: [65, 35], backgroundColor: ['#667eea', '#764ba2'] }]
+                },
+                options: { responsive: true }
+            });
+            
+            const profitCtx = document.getElementById('profitChart')?.getContext('2d');
+            if (profitCtx) {
+                profitChart = new Chart(profitCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{ label: 'Profit (M)', data: [8500, 9200, 10100, 11200, 12450, 13800], backgroundColor: '#667eea' }]
+                    },
+                    options: { responsive: true }
+                });
+            }
+            
+            const topCtx = document.getElementById('topProductsChart')?.getContext('2d');
+            if (topCtx) {
+                topProductsChart = new Chart(topCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Dresses', 'Watches', 'Earbuds', 'Shirts', 'Shoes'],
+                        datasets: [{ label: 'Units Sold', data: [45, 32, 28, 25, 20], backgroundColor: '#764ba2' }]
+                    },
+                    options: { responsive: true }
+                });
+            }
+        }
+        
+        // ============================================
+        // PAGE NAVIGATION
+        // ============================================
+        function showPage(page) {
+            document.getElementById('dashboard-page').style.display = page === 'dashboard' ? 'block' : 'none';
+            document.getElementById('products-page').style.display = page === 'products' ? 'block' : 'none';
+            document.getElementById('customers-page').style.display = page === 'customers' ? 'block' : 'none';
+            document.getElementById('reports-page').style.display = page === 'reports' ? 'block' : 'none';
+            document.getElementById('expenses-page').style.display = page === 'expenses' ? 'block' : 'none';
+            
+            if (page === 'reports') {
+                updateFinancialSummary();
+            }
+        }
+        
+        function updateFinancialSummary() {
+            const summaryDiv = document.getElementById('financialSummary');
+            if (!summaryDiv) return;
+            
+            const totalRevenue = orders.reduce((sum, o) => sum + o.amount, 0);
+            const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+            const totalProfit = totalRevenue - totalExpenses;
+            
+            summaryDiv.innerHTML = `
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;">
+                    <div style="padding:15px;background:#e8f5e9;border-radius:10px;text-align:center;">
+                        <h4>Total Revenue</h4>
+                        <p style="font-size:24px;font-weight:bold;color:#2e7d32;">M ${totalRevenue.toLocaleString()}</p>
+                    </div>
+                    <div style="padding:15px;background:#ffebee;border-radius:10px;text-align:center;">
+                        <h4>Total Expenses</h4>
+                        <p style="font-size:24px;font-weight:bold;color:#c62828;">M ${totalExpenses.toLocaleString()}</p>
+                    </div>
+                    <div style="padding:15px;background:#e3f2fd;border-radius:10px;text-align:center;">
+                        <h4>Net Profit</h4>
+                        <p style="font-size:24px;font-weight:bold;color:#1565c0;">M ${totalProfit.toLocaleString()}</p>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // ============================================
+        // MODAL FUNCTIONS
+        // ============================================
+        function openOrderModal() { loadCustomerDropdown(); loadProductDropdown(); document.getElementById('orderModal').style.display = 'flex'; }
+        function closeOrderModal() { document.getElementById('orderModal').style.display = 'none'; }
+        function openProductModal() { document.getElementById('productModal').style.display = 'flex'; }
+        function closeProductModal() { document.getElementById('productModal').style.display = 'none'; }
+        function openCustomerModal() { document.getElementById('customerModal').style.display = 'flex'; }
+        function closeCustomerModal() { document.getElementById('customerModal').style.display = 'none'; }
+        function openExpenseModal() { document.getElementById('expenseModal').style.display = 'flex'; }
+        function closeExpenseModal() { document.getElementById('expenseModal').style.display = 'none'; }
+        
+        // ============================================
+        // FORM SUBMISSIONS
+        // ============================================
+        document.getElementById('orderForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedProduct = products.find(p => p.id == document.getElementById('orderProduct').value);
+            const quantity = parseInt(document.getElementById('orderQuantity').value);
+            const deliveryFee = parseFloat(document.getElementById('orderDeliveryFee').value) || 0;
+            const amount = selectedProduct ? (selectedProduct.selling * quantity) + deliveryFee : 0;
+            
+            const newOrder = {
+                id: orders.length + 1,
+                customer: document.getElementById('orderCustomer').selectedOptions[0]?.text || 'Unknown',
+                product: selectedProduct?.name || 'Unknown',
+                quantity: quantity,
+                amount: amount,
+                status: 'ordered',
+                payment: document.getElementById('orderPayment').value === 'Cash' ? 'paid' : 'pending'
+            };
+            orders.unshift(newOrder);
+            loadOrdersTable();
+            updateStatsCards();
+            closeOrderModal();
+            alert('Order created successfully!');
+            document.getElementById('orderForm').reset();
+        });
+        
+        document.getElementById('productForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newProduct = {
+                id: products.length + 1,
+                name: document.getElementById('productName').value,
+                supplier: document.getElementById('productSupplier').value,
+                cost: parseFloat(document.getElementById('productCost').value),
+                selling: parseFloat(document.getElementById('productPrice').value)
+            };
+            products.push(newProduct);
+            loadProductsTable();
+            closeProductModal();
+            alert('Product added successfully!');
+            document.getElementById('productForm').reset();
+        });
+        
+        document.getElementById('customerForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newCustomer = {
+                id: customers.length + 1,
+                name: document.getElementById('customerName').value,
+                phone: document.getElementById('customerPhone').value,
+                email: document.getElementById('customerEmail').value,
+                address: document.getElementById('customerAddress').value,
+                orders: 0
+            };
+            customers.push(newCustomer);
+            loadCustomersTable();
+            closeCustomerModal();
+            alert('Customer added successfully!');
+            document.getElementById('customerForm').reset();
+        });
+        
+        document.getElementById('expenseForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newExpense = {
+                date: new Date().toISOString().split('T')[0],
+                category: document.getElementById('expenseCategory').value,
+                amount: parseFloat(document.getElementById('expenseAmount').value),
+                description: document.getElementById('expenseDescription').value
+            };
+            expenses.push(newExpense);
+            loadExpensesTable();
+            closeExpenseModal();
+            alert('Expense added successfully!');
+            document.getElementById('expenseForm').reset();
+        });
+        
+        // ============================================
+        // DELETE FUNCTIONS
+        // ============================================
+        function deleteProduct(id) {
+            if (confirm('Delete this product?')) {
+                products = products.filter(p => p.id !== id);
+                loadProductsTable();
+            }
+        }
+        
+        function deleteExpense(index) {
+            if (confirm('Delete this expense?')) {
+                expenses.splice(index, 1);
+                loadExpensesTable();
+            }
+        }
+        
+        function exportReport() {
+            const totalRevenue = orders.reduce((sum, o) => sum + o.amount, 0);
+            const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
+            let report = "SEILATSATSI FINANCIAL REPORT\n";
+            report += "===========================\n\n";
+            report += `Date: ${new Date().toLocaleString()}\n\n`;
+            report += `Total Orders: ${orders.length}\n`;
+            report += `Total Revenue: M ${totalRevenue.toLocaleString()}\n`;
+            report += `Total Expenses: M ${totalExpenses.toLocaleString()}\n`;
+            report += `Net Profit: M ${(totalRevenue - totalExpenses).toLocaleString()}\n`;
+            alert(report);
+            console.log(report);
+        }
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            loadAllData();
+        });
+    </script>
+</body>
+</html>
